@@ -1,0 +1,11 @@
+# Core analysis (CPU only) — tested with the versions below
+numpy==1.23.5
+pandas==1.5.3
+scikit-learn==1.2.2
+matplotlib==3.7.0
+
+# Optional: EconML CausalForestDML with honest confidence intervals (econml_cate.py)
+# econml>=0.14
+
+# Optional: DKT pretraining from raw sequences (needs a GPU for speed)
+# torch>=1.12

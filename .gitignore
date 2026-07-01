@@ -1,0 +1,13 @@
+# Datasets are third-party (non-commercial license); never commit them.
+data/*
+!data/README.md
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# OS / editor
+.DS_Store
+Thumbs.db

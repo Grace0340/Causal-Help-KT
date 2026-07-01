@@ -1,0 +1,103 @@
+Python 3.8.0 (default, Nov  6 2019, 16:00:02) [MSC v.1916 64 bit (AMD64)]
+
+======================================================================
+### ASSISTments09 | ATE/CATE/Qini   [cate_analysis.py]
+======================================================================
+Cross-fitting nuisances on KT state ...
+Cross-fitting nuisances on handcrafted features ...
+
+=== ATE: naive vs de-confounded ===
+  naive (biased)        : -0.441
+  AIPW handcrafted      : -0.257  (SE 0.014)
+  AIPW KT state         : -0.275  (SE 0.014)
+
+=== Overlap (KT propensity) ===
+  e range [0.002, 0.960] | e>0.95: 0.01%  e<0.05: 47.6%
+
+=== Heterogeneous effects CATE (KT-state T-learner) ===
+  mean -0.278 | std 0.167 | range [-0.745, +0.424]
+  share predicted negative (help harmful): 93.7%
+  share predicted positive (help helpful): 6.3%
+
+=== Who benefits (subgroup mean CATE) ===
+  baseline mastery   low/mid/high: -0.300 / -0.283 / -0.253
+  skill difficulty   low/mid/high: -0.294 / -0.282 / -0.261
+
+=== RQ1: targeting ability of the CATE ranking (DR-Qini, higher is better) ===
+  KT-state ranking    AUUC = +0.0229
+  handcrafted ranking AUUC = +0.0138
+
+figure saved: results/figures/cate_analysis.png
+
+[cate_analysis.py done, exit code 0, elapsed 259.6s]
+
+======================================================================
+### ASSISTments09 | overlap + sensitivity + E-value   [sensitivity_analysis.py]
+======================================================================
+Cross-fitting ...
+
+naive difference (biased): -0.441
+
+overlap-trim kept: 14822/28282  (treated 2258, control 12564)
+prior-struggling subgroup: 9901  (treated 2026)
+
+=== De-confounded ATE + sensitivity per specification ===
+  [full sample]
+     ATE=-0.275 (SE 0.014) | RR=0.606 [0.566,0.644]
+     E-value point=2.69 | near-null CI limit=2.48
+  [overlap-trim [.05,.95]]
+     ATE=-0.301 (SE 0.012) | RR=0.525 [0.485,0.560]
+     E-value point=3.22 | near-null CI limit=2.97
+  [struggling + trim]
+     ATE=-0.287 (SE 0.016) | RR=0.496 [0.445,0.549]
+     E-value point=3.45 | near-null CI limit=3.04
+
+Reading: a larger E-value is more robust. An E-value of X means an
+unmeasured confounder associated with both help-seeking and next-item
+success at risk-ratio strength ~X would be needed to explain the effect away.
+
+figure saved: results/figures/sensitivity_analysis.png
+
+[sensitivity_analysis.py done, exit code 0, elapsed 252.7s]
+
+======================================================================
+### ASSISTments09 | semi-synthetic PEHE (RQ1)   [semisynthetic_pehe.py]
+======================================================================
+synthetic treated share 20.3% | true ATE +0.071 | tau range [-0.270,+0.352]
+Fitting T-learners (KT / handcrafted / oracle) ...
+
+=== sqrt(PEHE) (lower is more accurate) ===
+  KT state (64)     sqrt(PEHE)=0.0849   |ATE error|=0.0008
+  handcrafted (6)   sqrt(PEHE)=0.1551   |ATE error|=0.1132
+  oracle (true z)   sqrt(PEHE)=0.0598   |ATE error|=0.0026
+
+KT state vs handcrafted: sqrt(PEHE) reduced by 45.3%  -> supports RQ1
+figure saved: results/figures/semisynthetic_pehe.png
+
+[semisynthetic_pehe.py done, exit code 0, elapsed 12.7s]
+
+======================================================================
+### Junyi | ATE/CATE/Qini/PEHE/sensitivity   [junyi_full_analysis.py]
+======================================================================
+Cross-fitting ...
+
+== ATE ==
+  naive -0.243 | AIPW handcrafted -0.123 | AIPW-KT -0.229
+  overlap: e<0.05 share 0.0%
+  CATE(KT): mean -0.233 std 0.035 negative share 100.0%
+
+== RQ1 Qini (AUUC) ==
+  KT +0.0037 | handcrafted +0.0073
+
+== Sensitivity ==
+  full sample      ATE -0.229 | RR 0.712 | E-value 2.16 | n=104241
+  overlap-trim     ATE -0.229 | RR 0.712 | E-value 2.16 | n=104241
+  struggling+trim  ATE -0.338 | RR 0.516 | E-value 3.29 | n=29164
+
+== Semi-synthetic PEHE ==
+  KT 0.0686 | handcrafted 0.1158 | oracle 0.0326
+  KT vs handcrafted: reduced by 40.8%
+
+figure: results/figures/junyi_replication.png
+
+[junyi_full_analysis.py done, exit code 0, elapsed 28.8s]
